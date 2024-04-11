@@ -1,0 +1,54 @@
+﻿@* @model List<PokeGallery.Models.PokemonNameAndUrl>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pokemon Details</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokemon Details</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>URL</th>
+        </tr>
+        @foreach (var pokemon in Model)
+        {
+            <tr>
+                <td>@GetPokemonIdFromUrl(pokemon.URL)</td>
+                <td>@pokemon.Name</td>
+                <td>@pokemon.URL</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
+
+@functions {
+    // URLからポケモンのIDを取得するメソッド
+    public string GetPokemonIdFromUrl(string url)
+    {
+        // URLを"/"で分割し、最後の要素を取得
+        string[] segments = url.Split('/');
+        string id = segments[segments.Length - 2]; // 最後から2番目の要素がIDになる
+        return id;
+    }
+}
+ *@

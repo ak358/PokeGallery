@@ -1,5 +1,21 @@
 namespace PokeGallery.Models
 {
+    //ポケモン一覧
+    public class PokemonList
+    {
+        public int Count { get; set; }
+        public string Next { get; set; }
+        public string Previous { get; set; }
+        public List<PokemonNameAndUrl> results { get; set; }
+    }
+
+    // ポケモンの名前とURL
+    public class PokemonNameAndUrl
+    {
+        public string Name { get; set; }
+        public string URL { get; set; }
+    }
+
     // ポケモンデータを表すクラス
     public class Pokemon
     {

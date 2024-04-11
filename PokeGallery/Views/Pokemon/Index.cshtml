@@ -3,13 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pokemon Details</title>
+    <title>Pokemon Search</title>
 </head>
 <body>
-    <h1>Pokemon Details</h1>
-    <div>
-        <p>ID: @Model.Id</p>
-        <p>Name: @Model.Name</p>
-    </div>
+    <h1>Pokemon Search</h1>
+    <form method="post">
+        <input type="text" name="pokemonId" placeholder="Enter Pokemon ID">
+        <button type="submit">Search</button>
+    </form>
+    @if (Model != null)
+    {
+        <h2>Pokemon Name</h2>
+        <p>@Model.Name</p>
+    }
 </body>
 </html>

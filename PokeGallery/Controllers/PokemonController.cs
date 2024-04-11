@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PokeGallery.Models;
-
-//コントローラーの作成: Controllersフォルダ内に、PokemonControllerを作成します。
-//このコントローラーは、ポケモンデータを取得してビューに渡します。
-//HttpGetメソッド内でAPIにGETリクエストを送信し、応答を解析してPokemonオブジェクトを構築します。
-//その後、Viewメソッドを使用してビューにデータを渡します。
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace PokeGallery.Controllers
 {
@@ -18,13 +15,17 @@ namespace PokeGallery.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            int id = 1;
-            // Pokemon APIのURL
-            //GET https://pokeapi.co/api/v2/pokemon/{id or name}/
+            return View();
+        }
 
-            string apiUrl = $"https://pokeapi.co/api/v2/pokemon/{id}/";
+        [HttpPost]
+        public async Task<IActionResult> Index(int pokemonId)
+        {
+            // Pokemon APIのURLを構築
+            string apiUrl = $"https://pokeapi.co/api/v2/pokemon/{pokemonId}/";
 
             // HttpClientのインスタンスを取得
             var client = _httpClientFactory.CreateClient();
@@ -32,14 +33,28 @@ namespace PokeGallery.Controllers
             // APIからデータを取得
             HttpResponseMessage response = await client.GetAsync(apiUrl);
 
-            // 取得したデータを文字列として読み取る
-            string responseData = await response.Content.ReadAsStringAsync();
+            // APIからの応答を確認
+            if (response.IsSuccessStatusCode)
+            {
+                // 取得したデータを文字列として読み取る
+                string responseData = await response.Content.ReadAsStringAsync();
 
-            // JSONデータをPokemonオブジェクトにデシリアライズ
-            Pokemon pokemon = JsonConvert.DeserializeObject<Pokemon>(responseData);
+                // JSONデータからPokemonオブジェクトにデシリアライズ
+                Pokemon pokemon = JsonConvert.DeserializeObject<Pokemon>(responseData);
 
-            // ビューにPokemonオブジェクトを渡して表示
-            return View(pokemon);
+                // ビューにPokemonの名前を渡して表示
+                return View(pokemon);
+            }
+            else
+            {
+                // Pokemonが見つからない場合はPokemonNotFoundページにリダイレクト
+                return RedirectToAction("PokemonNotFound");
+            }
+        }
+
+        public IActionResult PokemonNotFound()
+        {
+            return View();
         }
     }
 }
