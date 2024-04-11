@@ -4,17 +4,28 @@
 <html>
 <head>
     <title>Pokemon Search</title>
+    <style>
+        /* 画像のサイズを変更するスタイル */
+        img {
+            width: 300px; /* 幅を変更 */
+            height: auto; /* 高さを自動調整 */
+        }
+    </style>
 </head>
 <body>
-    <h1>Pokemon Search</h1>
-    <form method="post">
-        <input type="text" name="pokemonId" placeholder="Enter Pokemon ID">
-        <button type="submit">Search</button>
-    </form>
-    @if (Model != null)
-    {
-        <h2>Pokemon Name</h2>
-        <p>@Model.Name</p>
-    }
+    <div class="container">
+        <h1>Pokemon Search</h1>
+        <form method="post">
+            <input type="text" name="pokemonId" placeholder="Enter Pokemon ID">
+            <button type="submit">Search</button>
+        </form>
+        @if (Model != null)
+        {
+            <h2>Pokemon Name</h2>
+            <p>@Model.Name</p>
+            <!-- 画像のサイズを変更 -->
+            <img src="@Model.Sprites.FrontShiny" alt="Front Image" />
+        }
+    </div>
 </body>
 </html>
